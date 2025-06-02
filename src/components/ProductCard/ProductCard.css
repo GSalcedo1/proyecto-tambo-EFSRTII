@@ -1,0 +1,44 @@
+/* ... estilos anteriores ... */
+
+.tambo-productCard-stock {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 5px;
+}
+
+.stock-adjustment {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.adjustment-input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.adjustment-btn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.adjustment-btn.confirm {
+  background-color: #4caf50;
+  color: white;
+}
+
+.adjustment-btn.cancel {
+  background-color: #f44336;
+  color: white;
+}
