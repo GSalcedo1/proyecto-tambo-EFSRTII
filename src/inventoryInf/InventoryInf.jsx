@@ -1,21 +1,29 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getProductsRealtime, updateProductStock, recordSale, getSalesHistory } from '../firebase/firestore';
+import {
+  getProductsRealtime,
+  updateProductStock,
+  recordSale,
+  getSalesHistory,
+  addProductToFirestore,
+} from '../firebase/firestore';
 
-const InventoryContext = createContext();
+const InventoryInf = createContext(); // Contexto para el inventario.
 
+// Componente proveedor del contexto.
 export const InventoryProvider = ({ children }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [salesHistory, setSalesHistory] = useState([]);
+  const [products, setProducts] = useState([]); // Almacena todos los productos del inventario.
+  const [loading, setLoading] = useState(true); // Indica si los datos están cargando.
+  const [salesHistory, setSalesHistory] = useState([]); // 	Almacena el historial de ventas.
 
-  // Obtener productos en tiempo real
   useEffect(() => {
+    // Aquí, cuando React ejecuta el efecto tras el primer render,
+    // se invoca getProductsRealtime y por tanto se abre la suscripción.
     const unsubscribe = getProductsRealtime(products => {
-      setProducts(products);
-      setLoading(false);
+      setProducts(products); // Actualiza tu estado local de React con el nuevo array de productos.
+      setLoading(false); // Indica que la carga ha finalizado.
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Limpia la suscripción al desmontar el componente.
   }, []);
 
   // Obtener historial de ventas
@@ -37,11 +45,15 @@ export const InventoryProvider = ({ children }) => {
 
   // Añadir nuevo producto
   const addProduct = async productData => {
-    // Implementar según necesidad
+    try {
+      await addProductToFirestore(productData);
+    } catch (error) {
+      console.error('Error al añadir el producto:', error);
+    }
   };
 
   return (
-    <InventoryContext.Provider
+    <InventoryInf.Provider
       value={{
         products,
         loading,
@@ -53,8 +65,8 @@ export const InventoryProvider = ({ children }) => {
       }}
     >
       {children}
-    </InventoryContext.Provider>
+    </InventoryInf.Provider>
   );
 };
 
-export const useInventory = () => useContext(InventoryContext);
+export const useInventory = () => useContext(InventoryInf); // Hook para usar el contexto de inventario

@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { autoTable } from 'jspdf-autotable'; // Importación corregida
 
 export const generatePDFReport = (data, title, headers, rowMapper) => {
   const doc = new jsPDF();
@@ -16,13 +16,13 @@ export const generatePDFReport = (data, title, headers, rowMapper) => {
   // Tabla
   const tableData = data.map(item => rowMapper(item));
 
-  doc.autoTable({
+  autoTable(doc, {
     head: [headers],
     body: tableData,
     startY: 30,
     styles: { fontSize: 10 },
     headStyles: {
-      fillColor: [122, 20, 131], // Morado Tambo
+      fillColor: [122, 20, 131],
       textColor: 255,
     },
     alternateRowStyles: {
@@ -30,15 +30,16 @@ export const generatePDFReport = (data, title, headers, rowMapper) => {
     },
   });
 
-  // Total para inventario
   if (title.includes('Inventario')) {
     const totalStock = data.reduce((sum, product) => sum + product.stock, 0);
     const totalValue = data.reduce((sum, product) => sum + product.precio * product.stock, 0);
 
+    const finalY = doc.lastAutoTable.finalY || 30;
+
     doc.setFontSize(12);
-    doc.text(`Total de Productos: ${data.length}`, 14, doc.autoTable.previous.finalY + 10);
-    doc.text(`Total de Stock: ${totalStock} unidades`, 14, doc.autoTable.previous.finalY + 20);
-    doc.text(`Valor Total: S/ ${totalValue.toFixed(2)}`, 14, doc.autoTable.previous.finalY + 30);
+    doc.text(`Total de Productos: ${data.length}`, 14, finalY + 10);
+    doc.text(`Total de Stock: ${totalStock} unidades`, 14, finalY + 20);
+    doc.text(`Valor Total: S/ ${totalValue.toFixed(2)}`, 14, finalY + 30);
   }
 
   // Guardar PDF

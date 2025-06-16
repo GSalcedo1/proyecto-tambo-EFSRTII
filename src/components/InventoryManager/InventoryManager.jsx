@@ -1,44 +1,57 @@
 import { useState } from 'react';
-import { useInventory } from '../../InventoryInf/InventoryInf';
-import { ProductCard } from '../ProductCard/ProductCard';
+import { useInventory } from '../../InventoryInf/InventoryInf'; // Importar el hook personalizado para acceder al contexto de inventario.
+import { ProductCard } from '../ProductCard/ProductCard'; // Importar el componente ProductCard para mostrar los productos.
 import './InventoryManager.css';
 
 export function InventoryManager() {
-  const { products, loading } = useInventory();
+  // Componente principal para gestionar el inventario.
+  const { addProduct } = useInventory(); // Importar la función addProduct del contexto de inventario para añadir nuevos productos.
+  const { products, loading } = useInventory(); // Obtener productos y estado de carga desde el contexto de inventario.
   const [newProduct, setNewProduct] = useState({
+    // Estado para manejar el nuevo producto a añadir.
     nombre: '',
     precio: 0,
     stock: 0,
     categoria: '',
     imagen: '',
   });
-  const [showAddForm, setShowAddForm] = useState(false);
+
+  const [showAddForm, setShowAddForm] = useState(false); // Estado para mostrar/ocultar el formulario de añadir producto
 
   const handleInputChange = e => {
-    const { name, value } = e.target;
+    // Manejar cambios en los campos del formulario.
+    const { name, value } = e.target; // Desestructurar el evento para obtener el nombre y valor del campo.
     setNewProduct(prev => ({
       ...prev,
-      [name]: name === 'precio' || name === 'stock' ? Number(value) : value,
+      // Actualizar el estado del nuevo producto con el valor del campo modificado.
+      // Convertir los campos 'precio' y 'stock' a número, el resto se mantiene como texto.
+      [name]: name === 'precio' || name === 'stock' ? Number(value) : value, // Convertir precio y stock a número, el resto como texto.
     }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // Aquí implementar la función para añadir el nuevo producto
-    console.log('Nuevo producto:', newProduct);
-    setShowAddForm(false);
-    setNewProduct({
-      nombre: '',
-      precio: 0,
-      stock: 0,
-      categoria: '',
-      imagen: '',
-    });
+    try {
+      await addProduct(newProduct); // Usa la función del contexto
+      console.log('Producto guardado en Firebase');
+      setShowAddForm(false);
+      setNewProduct({
+        nombre: '',
+        precio: 0,
+        stock: 0,
+        categoria: '',
+        imagen: '',
+      });
+    } catch (error) {
+      console.error('Error al guardar el producto:', error);
+    }
   };
 
   // Agrupar productos por categoría
   const productsByCategory = products.reduce((acc, product) => {
+    // Si la categoría no está definida, asignar 'Sin categoría'.
     const category = product.categoria || 'Sin categoría';
+    // Agrupar productos por su categoría, si no existe, crea un nuevo array con el nombre de la categoria.
     if (!acc[category]) acc[category] = [];
     acc[category].push(product);
     return acc;
@@ -49,7 +62,7 @@ export function InventoryManager() {
   return (
     <div className="inventory-manager">
       <div className="inventory-header">
-        <h2>Gestión de Inventario</h2>
+        <h2>Inventario</h2>
         <button className="add-product-btn" onClick={() => setShowAddForm(!showAddForm)}>
           {showAddForm ? 'Cancelar' : 'Añadir Producto'}
         </button>

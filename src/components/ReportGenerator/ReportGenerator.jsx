@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useInventory } from '../../InventoryInf/InventoryInf';
 import { generatePDFReport } from '../../utils/PdfGenerator';
-import './ReportGenerator.css';
 
 export function ReportGenerator() {
   const { products, salesHistory, fetchSalesHistory } = useInventory();
@@ -68,7 +67,12 @@ export function ReportGenerator() {
         </label>
 
         <label>
-          <input type="radio" value="sales" checked={reportType === 'sales'} onChange={() => setReportType('sales')} />
+          <input
+            type="radio"
+            value="sales"
+            checked={reportType === 'sales'}
+            onChange={() => setReportType('sales')}
+          />
           Reporte de Ventas
         </label>
       </div>

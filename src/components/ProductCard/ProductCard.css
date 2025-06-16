@@ -1,29 +1,162 @@
-/* ... estilos anteriores ... */
+.tambo-productCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+}
+
+.tambo-productCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.tambo-productCard-imagenContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+}
+
+.tambo-productCard-imagen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tambo-productCard:hover .tambo-productCard-imagen {
+  transform: scale(1.08);
+}
+
+.tambo-productCard-info {
+  flex-grow: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tambo-productCard-nombre {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tambo-productCard-precio {
+  font-size: 18px;
+  font-weight: 700;
+  color: #7a1483;
+  margin-bottom: 6px;
+}
 
 .tambo-productCard-stock {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stock-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.stock-high {
+  background-color: #48bb78;
+}
+
+.stock-medium {
+  background-color: #ecc94b;
+}
+
+.stock-low {
+  background-color: #f56565;
+}
+
+.tambo-productCard-controles {
+  padding: 0 16px 16px;
+}
+
+.tambo-productCard-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #7a1483;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.tambo-productCard-btn:hover {
+  background-color: #5a0e60;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(122, 20, 131, 0.2);
+}
+
+.tambo-productCard-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 .stock-adjustment {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .adjustment-input {
-  width: 60px;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
   text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  transition: border-color 0.3s;
+}
+
+.adjustment-input:focus {
+  border-color: #7a1483;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(122, 20, 131, 0.1);
 }
 
 .adjustment-btn {
-  width: 25px;
-  height: 25px;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -31,14 +164,52 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.adjustment-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .adjustment-btn.confirm {
-  background-color: #4caf50;
+  background-color: #48bb78;
   color: white;
 }
 
 .adjustment-btn.cancel {
-  background-color: #f44336;
+  background-color: #e53e3e;
   color: white;
+}
+
+.category-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(122, 20, 131, 0.85);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .tambo-productCard-nombre {
+    font-size: 15px;
+  }
+
+  .tambo-productCard-precio {
+    font-size: 17px;
+  }
+
+  .adjustment-btn {
+    width: 32px;
+    height: 32px;
+  }
 }

@@ -16,6 +16,10 @@ export function ProductCard({ product }) {
 
   const confirmAdjustment = async () => {
     const newStock = localStock + adjustmentValue;
+    if (newStock < 0) {
+      alert('El stock no puede ser negativo');
+      return;
+    }
     setLocalStock(newStock);
     await updateStock(id, newStock);
     setAdjusting(false);
@@ -43,8 +47,17 @@ export function ProductCard({ product }) {
             <input
               type="number"
               value={adjustmentValue}
-              onChange={e => setAdjustmentValue(Number(e.target.value))}
+              onChange={e => {
+                const value = Number(e.target.value);
+                setAdjustmentValue(value);
+                if (localStock + value < 0) {
+                  e.target.setCustomValidity('El stock resultante no puede ser negativo');
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }}
               className="adjustment-input"
+              min={-localStock}
             />
             <button onClick={confirmAdjustment} className="adjustment-btn confirm">
               ✓

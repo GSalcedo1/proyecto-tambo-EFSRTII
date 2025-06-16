@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-
+import { NavLink } from 'react-router-dom'; // NavLink para navegación.
+// "isActive" para resaltar la página activa.
 export function Header() {
   return (
     <header className="tambo-header">
